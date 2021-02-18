@@ -1,0 +1,304 @@
++package sandbox
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
+
+[args...] > app
+  strArrToStd > @
+    intArrToStrArr
+      mergeSort
+        strArrToIntArr
+          args
+
+[arr] > insertionSort
+  subInsertionSort > @
+    array
+    arr
+
+[accum arr] > subInsertionSort
+  if. > @
+    eq.
+      arr.length
+      0
+    accum
+    subInsertionSort
+      merge
+        append.
+          arrSliceFromStartTo
+            accum
+            insertionIndexOf
+              accum
+              arrMin
+                arr
+          arrMin
+            arr
+        arrSliceToEndFrom
+          accum
+          insertionIndexOf
+            accum
+            arrMin
+              arr
+      merge
+        arrSliceFromStartTo
+          arr
+          indexOfMin
+            arr
+        arrSliceToEndFrom
+          arr
+          add.
+            indexOfMin
+              arr
+            1
+
+[arr] > indexOfMin
+  indexOf > @
+    arr
+    arrMin
+      arr
+
+[arr] > indexOfMax
+  indexOf > @
+    arr
+    arrMax
+      arr
+
+[arr elem] > insertionIndexOf
+  subInsertionIndexOf > @
+    arr
+    elem
+    0
+
+[arr elem i] > subInsertionIndexOf
+  if. > @
+    eq.
+      arr.length
+      i
+    i
+    if.
+      less.
+        get.
+          arr
+          i
+        elem
+      subInsertionIndexOf
+        arr
+        elem
+        add.
+          i
+          1
+      i
+
+[arr elem] > indexOf
+  subIndexOf > @
+    arr
+    elem
+    0
+
+[arr elem i] > subIndexOf
+  if. > @
+    eq.
+      arr.length
+      i
+    -1
+    if.
+      eq.
+        elem
+        get.
+          arr
+          i
+      i
+      subIndexOf
+        arr
+        elem
+        add.
+          i
+          1
+
+[arr1 arr2] > merge
+  reduce. > @
+    arr2
+    arr1
+    [accum current]
+      append. > @
+        accum
+        current
+
+[arr] > mergeSort
+  if. > @
+    less.
+      arr.length
+      2
+    arr
+    subMergeSort
+      array
+      mergeSort
+        arrSliceFromStartTo
+          arr
+          div.
+            arr.length
+            2
+      mergeSort
+        arrSliceToEndFrom
+          arr
+          div.
+            arr.length
+            2
+
+[accum arr1 arr2] > subMergeSort
+  if. > @
+    eq.
+      arr1.length
+      0
+    if.
+      eq.
+        arr2.length
+        0
+      accum
+      subMergeSort
+        append.
+          accum
+          get.
+            arr2
+            0
+        arr1
+        arrSliceToEndFrom
+          arr2
+          1
+    if.
+      eq.
+        arr2.length
+        0
+      subMergeSort
+        append.
+          accum
+          get.
+            arr1
+            0
+        arrSliceToEndFrom
+          arr1
+          1
+        arr2
+      if.
+        less.
+          get.
+            arr1
+            0
+          get.
+            arr2
+            0
+        subMergeSort
+          append.
+            accum
+            get.
+              arr1
+              0
+          arrSliceToEndFrom
+            arr1
+            1
+          arr2
+        subMergeSort
+          append.
+            accum
+            get.
+              arr2
+              0
+          arr1
+          arrSliceToEndFrom
+            arr2
+            1
+
+[arr end] > arrSliceFromStartTo
+  subArrSlice > @
+    arr
+    array
+    0
+    end
+
+[arr start] > arrSliceToEndFrom
+  subArrSlice > @
+    arr
+    array
+    start
+    arr.length
+
+[arr start end] > arrSlice
+  subArrSlice > @
+    arr
+    array
+    start
+    end
+
+[arr accum start end] > subArrSlice
+  if. > @
+    less.
+      start
+      end
+    subArrSlice
+      arr
+      append.
+        accum
+        get.
+          arr
+          start
+      add.
+        start
+        1
+      end
+    accum
+
+[arr] > strArrToIntArr
+  map. > @
+    arr
+    [current]
+      current.toInt > @
+
+[arr] > intArrToStrArr
+  map. > @
+    arr
+    [current]
+      sprintf > @
+        "%d "
+        current
+
+[arr] > strArrToStd
+  std arr 0 > @
+  [array i] > std
+    if. > @
+      less.
+        i
+        array.length
+      seq
+        stdout
+          array.get i
+        std
+          array
+          add.
+            i
+            1
+      true
+
+[arr] > arrMax
+  reduce. > @
+    arr
+    arr.get 0
+    [accum current]
+      if. > @
+        less.
+          current
+          accum
+        accum
+        current
+
+[arr] > arrMin
+  reduce. > @
+    arr
+    arr.get 0
+    [accum current]
+      if. > @
+        less.
+          accum
+          current
+        accum
+        current
+
+[elements...] > array
+  elements > @
