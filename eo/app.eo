@@ -9,6 +9,38 @@
         strArrToIntArr
           args
 
+[arr] > selectionSort
+  subSelectionSort > @
+    array
+    arr
+
+[accum arr] > subSelectionSort
+  if. > @
+    eq.
+      arr.length
+      0
+    accum
+    subSelectionSort
+      append.
+        accum
+        arrMin
+          arr
+      removeAt
+        arr
+        indexOfMin
+          arr
+
+[arr i] > removeAt
+  merge > @
+    arrSliceFromStartTo
+      arr
+      i
+    arrSliceToEndFrom
+      arr
+      add.
+        i
+        1
+
 [arr] > insertionSort
   subInsertionSort > @
     array
@@ -27,27 +59,22 @@
             accum
             insertionIndexOf
               accum
-              arrMin
+              get.
                 arr
-          arrMin
+                0
+          get.
             arr
+            0
         arrSliceToEndFrom
           accum
           insertionIndexOf
             accum
-            arrMin
+            get.
               arr
-      merge
-        arrSliceFromStartTo
-          arr
-          indexOfMin
-            arr
-        arrSliceToEndFrom
-          arr
-          add.
-            indexOfMin
-              arr
-            1
+              0
+      arrSliceToEndFrom
+        arr
+        1
 
 [arr] > indexOfMin
   indexOf > @
@@ -153,30 +180,16 @@
         arr2.length
         0
       accum
-      subMergeSort
-        append.
-          accum
-          get.
-            arr2
-            0
-        arr1
-        arrSliceToEndFrom
-          arr2
-          1
+      merge
+        accum
+        arr2
     if.
       eq.
         arr2.length
         0
-      subMergeSort
-        append.
-          accum
-          get.
-            arr1
-            0
-        arrSliceToEndFrom
-          arr1
-          1
-        arr2
+      merge
+        accum
+        arr1
       if.
         less.
           get.
