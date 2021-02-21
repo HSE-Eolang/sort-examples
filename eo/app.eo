@@ -9,6 +9,44 @@
         strArrToIntArr
           args
 
+[n] > pi
+  mul. > @
+    4.0
+    subPi
+      1.0
+      3.0
+      1
+      add.
+        n
+        1
+
+[accum divider i n] > subPi
+  if. > @
+    less.
+      i
+      n
+    subPi
+      add.
+        accum
+        div.
+          1.0
+          if.
+            eq.
+              mod.
+                i
+                2
+              0
+            divider
+            divider.neg
+      add.
+        divider
+        2.0
+      add.
+        i
+        1
+      n
+    accum
+
 [arr] > selectionSort
   subSelectionSort > @
     array
